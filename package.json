@@ -1,0 +1,16 @@
+{
+  "name": "react-server",
+  "version": "1.0.0",
+  "description": "server-client application using node, express and react",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gourav Agrawal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
