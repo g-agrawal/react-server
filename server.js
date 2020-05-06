@@ -2,8 +2,8 @@ const express = require('express')
 const path = require('path')
 
 const app = express();
-const PORT = process.env.PORT || 8080;
-
+const PORT = process.env.PORT || 5000;
+const prodEnv = app.get('env') == 'production';
 
 app.get('/posts', (req, res) => {
        //res.header("Access-Control-Allow-Origin", "*");
@@ -11,11 +11,12 @@ app.get('/posts', (req, res) => {
        res.json(posts);   
 });
 
-app.use(express.static('client/build'));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
+if(prodEnv) {
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    });
+}
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
