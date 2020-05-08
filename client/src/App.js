@@ -1,10 +1,10 @@
 import React from 'react';
-import Home from './componenets/Home';
+import BootstrapNavbar from './componenets/BootstrapNavbar';
 
 function App() {
   return (
     <div className="App">
-      <Home />
+      <BootstrapNavbar />
     </div>
   );
 }
