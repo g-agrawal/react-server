@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route, Link  } from "react-router-dom";
-import { Navbar, Nav, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap'
 import Home from './Home'
 import About from './About';
 import Contact from './Contact';
@@ -25,8 +25,10 @@ class BootstrapNavbar extends React.Component{
                                         <Nav.Link as={Link} to="/About" >About</Nav.Link>
                                         <Nav.Link as={Link} to="/Contact" >Contact</Nav.Link>
                                     </Nav>
-                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                                    <Button variant="success">Submit</Button>
+                                    <Form inline>
+                                        <FormControl type="text" placeholder="Search" className="mr-sm-2" size="sm"/>
+                                        <Button variant="outline-success">Search</Button>
+                                    </Form>
                                 </Navbar.Collapse>
                             </Navbar>
                             <br />

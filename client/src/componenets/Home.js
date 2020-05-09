@@ -17,17 +17,17 @@ class Home extends Component {
         const {posts} = this.state;
         let postList = posts.map(post => {
             return (
-                <div className="post card" key={post.id}>
-                    <div className="card-content">
-                        <span className="card-title red-text">{post.title}</span>
-                        <p>{post.body}</p>
+                <div className="card" key={post.id}>
+                    <div className="card-body">
+                        <h5 className="card-title text-primary">{post.title}</h5>
+                        <p className="card-text">{post.body}</p>
                     </div>
                 </div>
             )
         });
         return (
             <div className="home container">
-                <h4 className="center">Home</h4>
+                <h4 className="mainContent center">Home</h4>
                 {postList}
             </div>
         );
