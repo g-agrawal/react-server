@@ -20,7 +20,7 @@ code {
       left: 0;
       margin: auto;
       transform: translateX(-100%);
-      transition: all ease 0.25s;
+      transition: all ease 0.25s;      
   }
   .open {
       transform: translateX(0);
@@ -38,6 +38,12 @@ code {
   .open {
     display: block;
   }  
+}
+
+@media (max-width: 600px) {
+  .mobileMenu {
+    width: 250px;
+  }
 }
 
 .mainContent {

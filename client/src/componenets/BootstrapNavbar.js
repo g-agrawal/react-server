@@ -25,8 +25,8 @@ class BootstrapNavbar extends React.Component {
                     </ul>
                     <form className="form-inline my-2 my-lg-0">
                         {/* input className=form-control-sm and button className=btn-sm, for smaller search control */}
-                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"></input>
-                        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <input className="form-control-sm mr-sm-2" type="search" placeholder="Search" aria-label="Search"></input>
+                        <button className="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </div>
             </nav>
