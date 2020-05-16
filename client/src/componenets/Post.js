@@ -17,12 +17,13 @@ class Post extends Component {
         const postData = this.state;
         axios.post('/addPost', postData)
             .then(res => {
-                console.log('Response from server ' + res);
+                //console.log('Response from server ' + res);
             });
         this.setState({
             title: "",
             description: ""
         });
+        //this.props.history.push("/");
     }
     render(){
         return (

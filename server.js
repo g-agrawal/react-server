@@ -8,9 +8,11 @@ const mongoDbUrl = "mongodb://new-user-1:new-password-1@newpostscluster-shard-00
 const app = express();
 const PORT = process.env.PORT || 5000;
 const prodEnv = app.get('env') == 'production';
-var posts = [];
+var posts = [];  
+app.use(express.json());
 
-const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+app.get('/posts', (req, res) => {   
+    const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect(function(err, db) {
         if (err) {
             console.log('error on connecting to DB - ');
@@ -19,18 +21,14 @@ const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTo
         }
         var dbo = db.db("openskydb");
         dbo.collection("posts").find({}).toArray(function(err, result) {
-          if (err) {
-              console.log("error on finding records in database");
-              throw err;
-          }
-          posts = result;
-          db.close();
+            if (err) {
+                console.log("error on finding records in database");
+                throw err;
+            }
+            posts = result;
+            db.close();
         });
-      });  
-
-app.use(express.json());
-
-app.get('/posts', (req, res) => {    
+    });  
     res.json(posts); 
 });
 
