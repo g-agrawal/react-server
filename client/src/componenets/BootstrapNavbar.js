@@ -6,7 +6,7 @@ class BootstrapNavbar extends React.Component {
         return(
             <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark justify-conten-sm-start fixed-top">
-                <a className="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 mr-auto" href="/">Open Sky</a>
+                <a className="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 mr-lg-2 mr-auto" href="/">Open Sky</a>
                 <button className="navbar-toggler align-self-start" type="button">
                     <span className="navbar-toggler-icon"></span>
                 </button>                
@@ -17,11 +17,14 @@ class BootstrapNavbar extends React.Component {
                             <Link to="/" className="nav-link">Home</Link>
                         </li> 
                         <li className="subitem-width-auto  nav-item">
+                            <Link to="/Post" className="nav-link">Post</Link>
+                        </li>
+                        <li className="subitem-width-auto  nav-item">
                             <Link to="/About" className="nav-link">About</Link>
                         </li>  
                         <li className="subitem-width-auto  nav-item">
                             <Link to="/Contact" className="nav-link">Contact</Link>
-                        </li>                     
+                        </li>                         
                     </ul>
                     <form className="form-inline my-2 my-lg-0">
                         {/* input className=form-control-sm and button className=btn-sm, for smaller search control */}

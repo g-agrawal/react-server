@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Home from './componenets/Home';
 import About from './componenets/About';
 import Contact from './componenets/Contact';
+import Post from './componenets/Post';
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
           <Route exact path ='/' component={Home} />
           <Route exact path ='/About' component={About} />
           <Route exact path ='/Contact' component={Contact} />
+          <Route exact path ='/Post' component={Post} />
         </Switch>
       </div>
     </BrowserRouter>

@@ -40,6 +40,10 @@ code {
   }  
 }
 
+.postCard {
+  margin-top: 90px;
+}
+
 @media (max-width: 600px) {
   .mobileMenu {    
     width: 250px;    
@@ -53,6 +57,9 @@ code {
     margin-left: -20px;
     padding-left: 20px;
   }
+  .postCard {  
+    margin-top: 90px;  
+  }  
 }
 
 .mainContent {
@@ -61,4 +68,11 @@ code {
 
 .card {
   margin-bottom: 10px;
+}
+
+.postForm {
+  padding-top: 20px;
+  padding-bottom: 30px;
+  border-color: gray;
+  border-width: 2px;  
 }

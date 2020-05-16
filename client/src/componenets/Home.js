@@ -18,10 +18,10 @@ class Home extends Component {
         let postList = posts.length ? (
             posts.map(post => {
                 return (
-                    <div className="card" key={post.id}>
+                    <div className="card" key={post._id}>
                         <div className="card-body">
                             <h5 className="card-title text-primary">{post.title}</h5>
-                            <p className="card-text">{post.body}</p>
+                            <p className="card-text">{post.description}</p>
                         </div>
                     </div>
                 )
