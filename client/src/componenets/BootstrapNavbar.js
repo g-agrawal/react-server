@@ -13,13 +13,13 @@ class BootstrapNavbar extends React.Component {
                 <div className="collapse navbar-collapse d-flex flex-column flex-lg-row flex-xl-row justify-content-lg-end bg-dark p-3 p-lg-0 mt-5 mt-lg-0 mobileMenu" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto align-self-stretch">
                         {/* remove mr-auto to make menu item on right */}
-                        <li className="nav-item">
+                        <li className="subitem-width-auto nav-item">
                             <Link to="/" className="nav-link">Home</Link>
                         </li> 
-                        <li className="nav-item">
+                        <li className="subitem-width-auto  nav-item">
                             <Link to="/About" className="nav-link">About</Link>
                         </li>  
-                        <li className="nav-item">
+                        <li className="subitem-width-auto  nav-item">
                             <Link to="/Contact" className="nav-link">Contact</Link>
                         </li>                     
                     </ul>

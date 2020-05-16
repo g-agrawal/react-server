@@ -15,16 +15,22 @@ class Home extends Component {
     }
     render() {
         const {posts} = this.state;
-        let postList = posts.map(post => {
-            return (
-                <div className="card" key={post.id}>
-                    <div className="card-body">
-                        <h5 className="card-title text-primary">{post.title}</h5>
-                        <p className="card-text">{post.body}</p>
+        let postList = posts.length ? (
+            posts.map(post => {
+                return (
+                    <div className="card" key={post.id}>
+                        <div className="card-body">
+                            <h5 className="card-title text-primary">{post.title}</h5>
+                            <p className="card-text">{post.body}</p>
+                        </div>
                     </div>
-                </div>
-            )
-        });
+                )
+            })
+        ) : (
+        <div>
+            Please wait while loading content...
+        </div>
+        );
         return (
             <div className="home container">
                 <h4 className="mainContent center">Home</h4>
