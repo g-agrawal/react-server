@@ -20,7 +20,7 @@ class BootstrapNavbar extends React.Component {
                             <Link to="/Post" className="nav-link">Post</Link>
                         </li>
                         <li className="subitem-width-auto  nav-item">
-                            <Link to="/About" className="nav-link">About</Link>
+                            <Link to="/Refresh" className="nav-link">Refresh</Link>
                         </li>  
                         <li className="subitem-width-auto  nav-item">
                             <Link to="/Contact" className="nav-link">Contact</Link>
