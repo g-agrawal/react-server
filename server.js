@@ -9,52 +9,21 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const prodEnv = app.get('env') == 'production';
 var posts = [];  
+
 app.use(express.json());
 
-const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-    client.connect(function(err, db) {
-        if (err) {
-            console.log('error on connecting to DB - ');
-            console.log(err);
-            throw err;
-        }
-        var dbo = db.db("openskydb");
-        dbo.collection("posts").find({}).toArray(function(err, result) {
-            if (err) {
-                console.log("error on finding records in database");
-                throw err;
-            }
-            db.close();
-            posts = result;  
-        });
-    });
+getPostsFromDb();
 
 app.get('/refresh', (req, res) => {      
-    const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-    client.connect(function(err, db) {
-        if (err) {
-            console.log('error on connecting to DB - ');
-            console.log(err);
-            res.json({isSuccess: true, message: 'Error on connecting to Mongo DB'});
-            throw err;
-        }
-        var dbo = db.db("openskydb");
-        dbo.collection("posts").find({}).toArray(function(err, result) {
-            if (err) {
-                res.json({isSuccess: true, message: 'Error on fetching posts from Mongo DB'});
-                throw err;
-            }
-            db.close();
-            posts = result; 
-            res.json({isSuccess: true, message: 'Updated successfully !!'});
-        });
-    });
+    getPostsFromDb(); 
+    res.json({isSuccess: true, message: 'Updated successfully !!'});        
 });
-
-app.get('/posts', (req, res) => {      
+app.get('/posts', (req, res) => {  
+    if(prodEnv){
+        getPostsFromDb();
+    }    
     res.json(posts);
 });
-
 app.post('/addPost', (req, res) => {
     const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect(function(err, db) {
@@ -69,6 +38,7 @@ app.post('/addPost', (req, res) => {
             console.log("error on connecting database for adding record");
             throw addErr;
         }
+        res.json({message: addResult.insertedId});
         console.log("Number of posts inserted: " + addResult.insertedCount);
       });    
     });
@@ -89,6 +59,7 @@ app.delete('/deletePost/:_id', (req, res) => {
             if (err) throw err;
             console.log("1 document deleted");
             db.close();
+            res.json({message: 'Server response - deleted successfully'});
         }); 
     });
 });
@@ -104,7 +75,25 @@ app.listen(PORT, () => {
     console.log(`Server is listening on PORT ${PORT}`);
 });
 
-
+function getPostsFromDb() {
+    const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+    client.connect(function(err, db) {
+        if (err) {
+            console.log('error on connecting to DB - ');
+            console.log(err);
+            throw err;
+        }
+        var dbo = db.db("openskydb");
+        dbo.collection("posts").find({}).toArray(function(err, result) {
+            if (err) {
+                console.log("error on finding records in database");
+                throw err;
+            }
+            db.close();
+            posts = result;  
+        });
+    });    
+}
 
 function getPosts() {
     let postList = [

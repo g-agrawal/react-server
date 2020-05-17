@@ -22,7 +22,7 @@ class Home extends Component {
         let deleteUrl = '/deletePost/' + _id;
         axios.delete(deleteUrl)
             .then(res => {
-                console.log(res);
+                console.log(res.data.message);
             });
     } 
     handleEdit = (event) => {
