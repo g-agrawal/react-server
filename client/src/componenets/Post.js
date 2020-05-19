@@ -3,12 +3,15 @@ import axios from 'axios'
 
 class Post extends Component {
     state = {
+        _id: null,
         title: "",
-        description: ""
+        description: "",
+        isOriginal: true
     };
     handleChange = (event) => {
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.value,
+            isOriginal: false
         });
     }
     handleSubmit = (event) => {
@@ -20,13 +23,24 @@ class Post extends Component {
                 console.log('Response from server ');
                 console.log(res);
             });
-        this.setState({
-            title: "",
-            description: ""
-        });
-        //this.props.history.push("/");
+        if(!this.props.location.state) {
+            this.setState({
+                title: "",
+                description: ""
+            });
+        }
     }
     render(){
+        console.log(this.state);
+        if(this.props.location.state && this.state.isOriginal){
+            // eslint-disable-next-line
+            this.state._id = this.props.location.state.post._id;
+            // eslint-disable-next-line
+            this.state.title = this.props.location.state.post.title;
+            // eslint-disable-next-line
+            this.state.description = this.props.location.state.post.description;
+            console.log(this.state);
+        }
         return (
             <div className="postCard container">
                 <div className="" >

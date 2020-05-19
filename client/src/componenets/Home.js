@@ -1,11 +1,18 @@
 import React, {Component} from 'react'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import deleteImage from '../Images/deleteImage.png'
 import editImage from '../Images/editImage.png'
 
 class Home extends Component {
     state = {
-        posts : []
+        posts : [],
+        redirect: null,
+        redirectParam: {
+            _id: null,
+            title: "",
+            description: ""
+        }
     }
     componentDidMount(){
         axios.get('/posts')
@@ -25,10 +32,20 @@ class Home extends Component {
                 console.log(res.data.message);
             });
     } 
-    handleEdit = (event) => {
-        console.log('Edit');
+    handleEdit = (post) => {
+        this.setState({
+            redirect: '/Post',
+            redirectParam: post
+        });
     } 
     render() {
+        if(this.state.redirect) {
+            const post = this.state.redirectParam;
+            return <Redirect to={{
+                 pathname: this.state.redirect ,
+                 state: { post }
+            }} />
+        }
         const {posts} = this.state;
         let postList = posts.length ? (
             posts.map(post => {
@@ -40,7 +57,7 @@ class Home extends Component {
                         </div>
                         <div className="d-flex flex-column">
                             <input type="image" className="postModifyImage" id="deleteImage" onClick={() => {this.handleDelete(post._id)}} src={deleteImage} alt="Delete"/>
-                            <input type="image" className="postModifyImage" id="editImage" onClick={this.handleEdit} src={editImage} alt="Edit"/>
+                            <input type="image" className="postModifyImage" id="editImage" onClick={() => {this.handleEdit(post)}} src={editImage} alt="Edit"/>
                         </div>
                     </div>
                 )

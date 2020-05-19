@@ -15,14 +15,49 @@ app.use(express.json());
 getPostsFromDb();
 
 app.get('/refresh', (req, res) => {      
-    getPostsFromDb(); 
-    res.json({isSuccess: true, message: 'Updated successfully !!'});        
+    const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+    client.connect(function(err, db) {
+        if (err) {
+            console.log('error on connecting to DB');
+            res.json({isSuccess: false, message: 'Error on connecting database'});
+            throw err;
+        }
+        var dbo = db.db("openskydb");
+        dbo.collection("posts").find({}).toArray(function(err, result) {
+            if (err) {
+                console.log("Error on fetching records from database");
+                res.json({isSuccess: false, message: 'Updated successfully !!'});
+                throw err;
+            }
+            db.close();
+            posts = result;
+            res.json({isSuccess: true, message: 'Updated successfully !!'}); 
+        });
+    });              
 });
 app.get('/posts', (req, res) => {  
-    if(prodEnv){
-        getPostsFromDb();
-    }    
-    res.json(posts);
+    if(prodEnv) {
+        const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+        client.connect(function(err, db) {
+            if (err) {
+                console.log('error on connecting to DB - ');
+                console.log(err);
+                throw err;
+            }
+            var dbo = db.db("openskydb");
+            dbo.collection("posts").find({}).toArray(function(err, result) {
+                if (err) {
+                    console.log("error on finding records in database");
+                    throw err;
+                }
+                db.close();
+                res.json(result);  
+            });
+        }); 
+    }
+    else {
+        res.json(posts);
+    }      
 });
 app.post('/addPost', (req, res) => {
     const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -32,15 +67,33 @@ app.post('/addPost', (req, res) => {
             throw err;
         }
         var dbo = db.db("openskydb");
-        let post = req.body;``
-        dbo.collection("posts").insertOne(post, function(addErr, addResult) {
-          if (addErr) {
-            console.log("error on connecting database for adding record");
-            throw addErr;
+        let post = req.body;
+
+        if(post._id){
+            console.log('existing record');
+            const objectId = new ObjectID(post._id);
+            dbo.collection("posts").replaceOne({ "_id": objectId}, { "title": post.title, "description": post.description }, function(addErr, addResult) {
+                if (addErr) {
+                  console.log("error on updating record in database");
+                  throw addErr;
+              }
+              db.close();
+              res.json({message: addResult.insertedId});
+              console.log("Updated successfully");
+            }); 
         }
-        res.json({message: addResult.insertedId});
-        console.log("Number of posts inserted: " + addResult.insertedCount);
-      });    
+        else {
+            console.log('New record');
+            dbo.collection("posts").insertOne(post, function(addErr, addResult) {
+                if (addErr) {
+                  console.log("error on adding record in database");
+                  throw addErr;
+              }
+              db.close();
+              res.json({message: addResult.insertedId});
+              console.log("Number of posts inserted: " + addResult.insertedCount);
+            });   
+        }         
     });
 });
 
