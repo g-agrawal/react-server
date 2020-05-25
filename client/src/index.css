@@ -12,6 +12,16 @@ code {
     monospace;
 }
 
+textarea { 
+  height: auto; 
+}
+
+.maxLabel {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #666;
+}
+
 @media (max-width: 992px) {
   .mobileMenu {
       position: fixed;
