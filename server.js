@@ -12,7 +12,24 @@ var posts = [];
 
 app.use(express.json());
 
-getPostsFromDb();
+const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect(function(err, db) {
+    if (err) {
+        console.log('error on connecting to DB - ');
+        console.log(err);
+        throw err;
+    }
+    var dbo = db.db("openskydb");
+    dbo.collection("posts").find({}).toArray(function(err, result) {
+        if (err) {
+            console.log("error on finding records in database");
+            throw err;
+        }
+        db.close();
+        posts = result;  
+    });
+});    
+
 
 app.get('/refresh', (req, res) => {      
     const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -127,26 +144,6 @@ if(prodEnv) {
 app.listen(PORT, () => {
     console.log(`Server is listening on PORT ${PORT}`);
 });
-
-function getPostsFromDb() {
-    const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-    client.connect(function(err, db) {
-        if (err) {
-            console.log('error on connecting to DB - ');
-            console.log(err);
-            throw err;
-        }
-        var dbo = db.db("openskydb");
-        dbo.collection("posts").find({}).toArray(function(err, result) {
-            if (err) {
-                console.log("error on finding records in database");
-                throw err;
-            }
-            db.close();
-            posts = result;  
-        });
-    });    
-}
 
 function getPosts() {
     let postList = [

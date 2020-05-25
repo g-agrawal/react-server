@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 class Post extends Component {
@@ -6,6 +7,7 @@ class Post extends Component {
         _id: null,
         title: "",
         description: "",
+        message: "After submit you will be redirected to home !!",
         isOriginal: true
     };
     handleChange = (event) => {
@@ -17,21 +19,24 @@ class Post extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         //const postData = new FormData(event.target);
+        this.setState({
+            message: 'Please wait while submitting your post and redirecting to Home !!'
+        });
         const postData = this.state;
         axios.post('/addPost', postData)
             .then(res => {
                 console.log('Response from server ');
                 console.log(res);
+                this.props.history.push('/');
             });
-        if(!this.props.location.state) {
-            this.setState({
-                title: "",
-                description: ""
-            });
-        }
+        // if(!this.props.location.state) {
+        //     this.setState({
+        //         title: "",
+        //         description: ""
+        //     });
+        // }
     }
     render(){
-        console.log(this.state);
         if(this.props.location.state && this.state.isOriginal){
             // eslint-disable-next-line
             this.state._id = this.props.location.state.post._id;
@@ -39,7 +44,6 @@ class Post extends Component {
             this.state.title = this.props.location.state.post.title;
             // eslint-disable-next-line
             this.state.description = this.props.location.state.post.description;
-            console.log(this.state);
         }
         return (
             <div className="postCard container">
@@ -55,6 +59,9 @@ class Post extends Component {
                         </div>
                         <button type="submit" className="btn btn-success btn-sm">Submit</button>
                     </form>
+                    <div>
+                        <label>{this.state.message}</label>
+                    </div>
                     </div>
             </div>
         );
