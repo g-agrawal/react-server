@@ -17,12 +17,18 @@ class Post extends Component {
         if(event.target.name === "title") {
             let remainingChars = 50 - event.target.value.length;
             remainingChars = remainingChars < 0 ? 0 : remainingChars
-            if(remainingChars > 0) {
-                //this.state.titleCharAllowedMessage
+            if(remainingChars >= 0) {
+                // eslint-disable-next-line
+                this.state.titleCharAllowedMessage = remainingChars + ' character(s) remaining'
             }
         }
         if(event.target.name === "description") {
-            //console.log('desc called');
+            let remainingChars = 100 - event.target.value.length;
+            remainingChars = remainingChars < 0 ? 0 : remainingChars
+            if(remainingChars >= 0) {
+                // eslint-disable-next-line
+                this.state.descriptionCharAllowedMessage = remainingChars + ' character(s) remaining'
+            }
         }
         this.setState({
             [event.target.name]: event.target.value,
@@ -42,12 +48,10 @@ class Post extends Component {
                 console.log(res);
                 this.props.history.push('/');
             });
-        // if(!this.props.location.state) {
-        //     this.setState({
-        //         title: "",
-        //         description: ""
-        //     });
-        // }
+    }
+    handleCancel = (event) => {
+        event.preventDefault();
+        this.props.history.push('/');
     }
     render(){
         if(this.props.location.state && this.state.isOriginal){
@@ -74,10 +78,11 @@ class Post extends Component {
                             <label className="maxLabel">{this.state.descriptionCharAllowedMessage}</label>
                         </div>
                         <button type="submit" className="btn btn-success btn-sm">Submit</button>
+                        <button className="btn btn-success btn-sm ml-2" onClick={this.handleCancel}>Cancel</button>
+                        <div>
+                            <label className="maxLabel ml-0">{this.state.message}</label>
+                        </div>
                     </form>
-                    <div>
-                        <label>{this.state.message}</label>
-                    </div>
                     </div>
             </div>
         );
