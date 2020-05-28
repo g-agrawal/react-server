@@ -67,7 +67,7 @@ app.get('/posts', (req, res) => {
                 throw err;
             }
             var dbo = db.db("openskydb");
-            dbo.collection("posts").find({}).toArray(function(err, result) {
+            dbo.collection("posts").find({}).sort({$natural: -1}).toArray(function(err, result) {
                 if (err) {
                     console.log("error on finding records in database");
                     throw err;
