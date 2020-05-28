@@ -1,15 +1,19 @@
 const express = require('express')
-const http = require('http')
+const app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 const path = require('path')
 const { MongoClient, ObjectID } = require('mongodb');
 
 //const mongoDbUrl = "mongodb+srv://opensky_1:1_skyopen@openskycluster-9y8gp.gcp.mongodb.net/test?retryWrites=true&w=majority";
 //const mongoDbUrl = "mongodb://opensky_1:1_skyopen@openskycluster-shard-00-00-9y8gp.gcp.mongodb.net:27017,openskycluster-shard-00-01-9y8gp.gcp.mongodb.net:27017,openskycluster-shard-00-02-9y8gp.gcp.mongodb.net:27017/test?ssl=true&replicaSet=OpenSkyCluster-shard-0&authSource=admin&retryWrites=true&w=majority";
 const mongoDbUrl = "mongodb://new-user-1:new-password-1@newpostscluster-shard-00-00-fu1f4.mongodb.net:27017,newpostscluster-shard-00-01-fu1f4.mongodb.net:27017,newpostscluster-shard-00-02-fu1f4.mongodb.net:27017/test?ssl=true&replicaSet=NewPostsCluster-shard-0&authSource=admin&retryWrites=true&w=majority";
-const app = express();
+
 const PORT = process.env.PORT || 5000;
 const prodEnv = app.get('env') == 'production';
 var posts = [];  
+
+//var globalSocket = socketIo.socket;
 
 app.use(express.json());
 
@@ -88,7 +92,7 @@ app.post('/addPost', (req, res) => {
         let post = req.body;
 
         if(post._id){
-            console.log('existing record');
+            //console.log('existing record');
             const objectId = new ObjectID(post._id);
             dbo.collection("posts").replaceOne({ "_id": objectId}, { "title": post.title, "description": post.description }, function(addErr, addResult) {
                 if (addErr) {
@@ -97,11 +101,12 @@ app.post('/addPost', (req, res) => {
               }
               db.close();
               res.json({message: addResult.insertedId});
-              console.log("Updated successfully");
+              io.emit('postUpdated', { "_id": addResult.insertedId, "post": addResult.ops[0] });
+              //console.log("Updated successfully");
             }); 
         }
         else {
-            console.log('New record');
+            //console.log('New record');
             dbo.collection("posts").insertOne(post, function(addErr, addResult) {
                 if (addErr) {
                   console.log("error on adding record in database");
@@ -109,7 +114,8 @@ app.post('/addPost', (req, res) => {
               }
               db.close();
               res.json({message: addResult.insertedId});
-              console.log("Number of posts inserted: " + addResult.insertedCount);
+              io.emit('postAdded', addResult.ops[0]);
+              //console.log("Number of posts inserted: " + addResult.insertedCount);
             });   
         }         
     });
@@ -126,11 +132,12 @@ app.delete('/deletePost/:_id', (req, res) => {
         var dbo = db.db("openskydb");
         const objectId = new ObjectID(req.params._id);
         var myquery = { _id: objectId };
-        dbo.collection("posts").deleteOne(myquery, function(err, obj) {
+        dbo.collection("posts").deleteOne(myquery, function(err, deleteResult) {
             if (err) throw err;
-            console.log("1 document deleted");
+            //console.log("1 document deleted");
             db.close();
             res.json({message: 'Server response - deleted successfully'});
+            io.emit('postDeleted', req.params._id);
         }); 
     });
 });
@@ -142,7 +149,16 @@ if(prodEnv) {
     });
 }
 
-const server = http.createServer(app);
+//const server = http.createServer(app);
+//const io = socketIo(server);
+
+io.on('connection',  (socket) => {
+    console.log('client connected');
+    //globalSocket = socket;     
+    socket.on('disconnect', () => {
+        console.log('client disconnected');
+    });
+});
 
 server.listen(PORT, () => {
     console.log(`Server is listening on PORT ${PORT}`);

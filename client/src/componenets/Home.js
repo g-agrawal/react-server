@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
+import socketIoClient from 'socket.io-client'
 import deleteImage from '../Images/deleteImage.png'
 import editImage from '../Images/editImage.png'
 
@@ -22,6 +23,25 @@ class Home extends Component {
                     posts: res.data
                 });
             });
+        const socket = socketIoClient('/');
+        socket.on('postAdded', data => {
+            console.log('received postAdded event');
+            if(!this.state.posts.find(post => post._id === data._id)) {
+                let updatedPosts = [data, ...this.state.posts];
+                this.setState({
+                    posts: updatedPosts
+                });
+                console.log('added in the list');
+            }            
+        });
+        socket.on('postUpdated', data => {
+            console.log('received postUpdated event');
+            console.log(data);
+        });
+        socket.on('postDeleted', data => {
+            console.log('received postDeleted event');
+            console.log(data);
+        });
     }
     handleDelete = (_id) => {
         const posts = this.state.posts.filter(post => post._id !== _id);
