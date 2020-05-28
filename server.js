@@ -1,4 +1,5 @@
 const express = require('express')
+const http = require('http')
 const path = require('path')
 const { MongoClient, ObjectID } = require('mongodb');
 
@@ -141,7 +142,9 @@ if(prodEnv) {
     });
 }
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+
+server.listen(PORT, () => {
     console.log(`Server is listening on PORT ${PORT}`);
 });
 
