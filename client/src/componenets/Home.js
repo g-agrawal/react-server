@@ -37,10 +37,20 @@ class Home extends Component {
         socket.on('postUpdated', data => {
             console.log('received postUpdated event');
             console.log(data);
+            let posts = [...this.state.posts];
+            let postChanged = posts.find(post => post._id === data._id);
+            postChanged.title = data.post.title;
+            postChanged.description = data.post.description;
+            this.setState({posts});
         });
         socket.on('postDeleted', data => {
-            console.log('received postDeleted event');
-            console.log(data);
+            console.log('received postDeleted event Id ' + data._id);
+            let updatedPosts = this.state.posts.filter(post => post._id !== data._id);
+            console.log(updatedPosts);
+            this.setState({
+                posts: updatedPosts
+            });
+            console.log('deleted from the list'); 
         });
     }
     handleDelete = (_id) => {

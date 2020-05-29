@@ -101,7 +101,7 @@ app.post('/addPost', (req, res) => {
               }
               db.close();
               res.json({message: addResult.insertedId});
-              io.emit('postUpdated', { "_id": addResult.insertedId, "post": addResult.ops[0] });
+              io.emit('postUpdated', { "_id": post._id, "post": addResult.ops[0] });
               //console.log("Updated successfully");
             }); 
         }
@@ -137,7 +137,7 @@ app.delete('/deletePost/:_id', (req, res) => {
             //console.log("1 document deleted");
             db.close();
             res.json({message: 'Server response - deleted successfully'});
-            io.emit('postDeleted', req.params._id);
+            io.emit('postDeleted', { "_id": req.params._id});
         }); 
     });
 });
