@@ -1,3 +1,10 @@
+------------ How to add new Url, create and deploy app from Git repository ---------------
+1. heroku create appName
+2. Got to heroku dashboard and open appName
+3. Select deploy using Git repository and search your git repo and enable auto deploy
+4. Select deploy master branch 
+5. Got to appName.herokuapp.com
+------------------------------------------------------------------------------------------
 _______________________________________________________________________________
 Use this for dropdown items in menunavigation bar
 <Navbar.Collapse id="basic-navbar-nav">

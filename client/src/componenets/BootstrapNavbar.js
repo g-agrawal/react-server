@@ -6,7 +6,7 @@ class BootstrapNavbar extends React.Component {
         return(
             <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark justify-conten-sm-start fixed-top">
-                <a className="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 mr-lg-2 mr-auto" href="/">Open Sky</a>
+                <a className="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 mr-lg-2 mr-auto" href="/">Open Blue Sky</a>
                 <button className="navbar-toggler align-self-start" type="button">
                     <span className="navbar-toggler-icon"></span>
                 </button>                
