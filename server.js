@@ -45,7 +45,7 @@ app.get('/refresh', (req, res) => {
             throw err;
         }
         var dbo = db.db("openskydb");
-        dbo.collection("posts").find({}).toArray(function(err, result) {
+        dbo.collection("posts").find({}).sort({$natural: -1}).toArray(function(err, result) {
             if (err) {
                 console.log("Error on fetching records from database");
                 res.json({isSuccess: false, message: 'Updated successfully !!'});

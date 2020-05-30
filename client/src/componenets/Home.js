@@ -25,13 +25,13 @@ class Home extends Component {
             });
         const socket = socketIoClient('/');
         socket.on('postAdded', data => {
-            console.log('received postAdded event');
+            //console.log('received postAdded event');
             if(!this.state.posts.find(post => post._id === data._id)) {
                 let updatedPosts = [data, ...this.state.posts];
                 this.setState({
                     posts: updatedPosts
                 });
-                console.log('added in the list');
+                //console.log('added in the list');
             }            
         });
         socket.on('postUpdated', data => {
@@ -39,18 +39,20 @@ class Home extends Component {
             console.log(data);
             let posts = [...this.state.posts];
             let postChanged = posts.find(post => post._id === data._id);
-            postChanged.title = data.post.title;
-            postChanged.description = data.post.description;
-            this.setState({posts});
+            if(postChanged) {
+                postChanged.title = data.post.title;
+                postChanged.description = data.post.description;
+                this.setState({posts});
+            }            
         });
         socket.on('postDeleted', data => {
-            console.log('received postDeleted event Id ' + data._id);
+            //console.log('received postDeleted event Id ' + data._id);
             let updatedPosts = this.state.posts.filter(post => post._id !== data._id);
-            console.log(updatedPosts);
+            //console.log(updatedPosts);
             this.setState({
                 posts: updatedPosts
             });
-            console.log('deleted from the list'); 
+            //console.log('deleted from the list'); 
         });
     }
     handleDelete = (_id) => {
@@ -59,7 +61,7 @@ class Home extends Component {
         let deleteUrl = '/deletePost/' + _id;
         axios.delete(deleteUrl)
             .then(res => {
-                console.log(res.data.message);
+                //console.log(res.data.message);
             });
     } 
     handleEdit = (post) => {
