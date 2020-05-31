@@ -44,8 +44,6 @@ class Post extends Component {
         const postData = this.state;
         axios.post('/addPost', postData)
             .then(res => {
-                //console.log('Response from server ');
-                //console.log(res);
                 this.props.history.push('/');
             });
     }
@@ -68,13 +66,13 @@ class Post extends Component {
                     <form className="postForm" onSubmit={this.handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="postTitle">Title</label>                            
-                            <input type="text" className="form-control" id="postTitle" name="title" placeholder="Enter title" 
+                            <input type="text" className="form-control" id="postTitle" name="title" required placeholder="Enter title" 
                                 maxLength="50" value={this.state.title} onChange={this.handleChange}></input>
                             <label className="maxLabel">{this.state.titleCharAllowedMessage}</label>
                         </div>
                         <div className="form-group">
                             <label htmlFor="postDescription">Description</label>
-                            <textarea type="text" maxLength="100" rows="5" className="form-control" id="postDescription" name="description" placeholder="Enter description" value={this.state.description} onChange={this.handleChange}></textarea>
+                            <textarea type="text" maxLength="100" rows="5" className="form-control" id="postDescription" name="description" required placeholder="Enter description" value={this.state.description} onChange={this.handleChange}></textarea>
                             <label className="maxLabel">{this.state.descriptionCharAllowedMessage}</label>
                         </div>
                         <button type="submit" className="btn btn-success btn-sm">Submit</button>

@@ -2,6 +2,12 @@ import React from 'react'
 import { Link  } from "react-router-dom";
 
 class BootstrapNavbar extends React.Component {
+    handleSubmit = (event) => {
+        const formData = new FormData(event.target);
+        const searchText = formData.get('searchPost');
+        console.log(searchText); 
+
+    }
     render(){
         return(
             <div>
@@ -26,9 +32,9 @@ class BootstrapNavbar extends React.Component {
                             <Link to="/Contact" className="nav-link">Contact</Link>
                         </li>                         
                     </ul>
-                    <form className="form-inline my-2 my-lg-0">
+                    <form className="form-inline my-2 my-lg-0" onSubmit={this.handleSubmit}>
                         {/* input className=form-control-sm and button className=btn-sm, for smaller search control */}
-                        <input className="form-control-sm mr-sm-2" type="search" placeholder="Search" aria-label="Search"></input>
+                        <input className="form-control-sm mr-sm-2" type="search" name="searchPost" placeholder="Search" aria-label="Search"></input>
                         <button className="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </div>

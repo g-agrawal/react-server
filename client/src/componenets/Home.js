@@ -35,8 +35,8 @@ class Home extends Component {
             }            
         });
         socket.on('postUpdated', data => {
-            console.log('received postUpdated event');
-            console.log(data);
+            //console.log('received postUpdated event');
+            //console.log(data);
             let posts = [...this.state.posts];
             let postChanged = posts.find(post => post._id === data._id);
             if(postChanged) {
