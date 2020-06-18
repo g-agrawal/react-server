@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import { addPost } from '../actions/postAction';
 
 class Post extends Component {
     state = {
@@ -11,6 +12,15 @@ class Post extends Component {
         descriptionCharAllowedMessage: "Enter between 1 to 100 character(s)",
         isOriginal: true
     };
+    componentDidMount() {        
+        if(this.props.post) {
+            this.setState({
+                _id: this.props.post._id,
+                title: this.props.post.title,
+                description: this.props.post.description
+            });
+        }
+    }
     handleChange = (event) => {
         // Read More
         //https://bootsnipp.com/snippets/ZVKyx
@@ -38,28 +48,15 @@ class Post extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         //const postData = new FormData(event.target);
-        this.setState({
-            message: 'Please wait while submitting your post and redirecting to Home !!'
-        });
-        const postData = this.state;
-        axios.post('/addPost', postData)
-            .then(res => {
-                this.props.history.push('/');
-            });
+        const postData = this.state;        
+        this.props.onAddPost(postData);
+        this.props.history.push('/');
     }
     handleCancel = (event) => {
         event.preventDefault();
         this.props.history.push('/');
     }
-    render(){
-        if(this.props.location.state && this.state.isOriginal){
-            // eslint-disable-next-line
-            this.state._id = this.props.location.state.post._id;
-            // eslint-disable-next-line
-            this.state.title = this.props.location.state.post.title;
-            // eslint-disable-next-line
-            this.state.description = this.props.location.state.post.description;
-        }
+    render() {
         return (
             <div className="postCard container">
                 <div className="" >
@@ -87,4 +84,22 @@ class Post extends Component {
     }
 }
 
-export default Post;
+const mapStateToProps = (state, ownProps) => {
+    if(ownProps.match.params.postId) {
+        let postId = ownProps.match.params.postId;
+        return {
+            post: state.find(post => post._id === postId)
+        };
+    }
+    return { };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddPost: post => {
+            dispatch(addPost(post));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

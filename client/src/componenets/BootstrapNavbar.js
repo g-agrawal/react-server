@@ -6,7 +6,6 @@ class BootstrapNavbar extends React.Component {
         const formData = new FormData(event.target);
         const searchText = formData.get('searchPost');
         console.log(searchText); 
-
     }
     render(){
         return(

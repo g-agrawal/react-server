@@ -13,8 +13,6 @@ const PORT = process.env.PORT || 5000;
 const prodEnv = app.get('env') == 'production';
 var posts = [];  
 
-//var globalSocket = socketIo.socket;
-
 app.use(express.json());
 
 const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -78,6 +76,7 @@ app.get('/posts', (req, res) => {
         }); 
     }
     else {
+        console.log('got post request from client');
         res.json(posts);
     }      
 });
@@ -91,8 +90,7 @@ app.post('/addPost', (req, res) => {
         var dbo = db.db("openskydb");
         let post = req.body;
 
-        if(post._id){
-            //console.log('existing record');
+        if(post._id) {
             const objectId = new ObjectID(post._id);
             dbo.collection("posts").replaceOne({ "_id": objectId}, { "title": post.title, "description": post.description }, function(addErr, addResult) {
                 if (addErr) {
@@ -100,22 +98,22 @@ app.post('/addPost', (req, res) => {
                   throw addErr;
               }
               db.close();
-              res.json({message: addResult.insertedId});
-              io.emit('postUpdated', { "_id": post._id, "post": addResult.ops[0] });
-              //console.log("Updated successfully");
+              const newUpdatedPost = { "_id": post._id, "title": addResult.ops[0].title, "description": addResult.ops[0].description };
+              res.json(newUpdatedPost);
+              io.emit('postUpdated', newUpdatedPost);
             }); 
         }
         else {
-            //console.log('New record');
             dbo.collection("posts").insertOne(post, function(addErr, addResult) {
                 if (addErr) {
                   console.log("error on adding record in database");
                   throw addErr;
               }
               db.close();
-              res.json({message: addResult.insertedId});
+              const newAddedPost = addResult.ops[0];
+              res.json(newAddedPost);
+              console.log(newAddedPost);
               io.emit('postAdded', addResult.ops[0]);
-              //console.log("Number of posts inserted: " + addResult.insertedCount);
             });   
         }         
     });
@@ -134,7 +132,6 @@ app.delete('/deletePost/:_id', (req, res) => {
         var myquery = { _id: objectId };
         dbo.collection("posts").deleteOne(myquery, function(err, deleteResult) {
             if (err) throw err;
-            //console.log("1 document deleted");
             db.close();
             res.json({message: 'Server response - deleted successfully'});
             io.emit('postDeleted', { "_id": req.params._id});
@@ -149,12 +146,8 @@ if(prodEnv) {
     });
 }
 
-//const server = http.createServer(app);
-//const io = socketIo(server);
-
 io.on('connection',  (socket) => {
-    console.log('client connected');
-    //globalSocket = socket;     
+    console.log('client connected');  
     socket.on('disconnect', () => {
         console.log('client disconnected');
     });
@@ -163,22 +156,4 @@ io.on('connection',  (socket) => {
 server.listen(PORT, () => {
     console.log(`Server is listening on PORT ${PORT}`);
 });
-
-function getPosts() {
-    let postList = [
-        {
-            "title": "Grapes",
-            "description": "Grapes is of green color"
-        },
-        {
-            "title": "Fuel",
-            "description": "Fuel is of black color"
-        },
-        {
-            "title": "Banana",
-            "description": "Banana is of yellow color"
-        }
-    ]
-    return postList;
-}
 
