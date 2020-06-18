@@ -1,4 +1,4 @@
-import { DELETE_POST, FETCH_POST, ADD_POST } from "./actionTypes"
+import { DELETE_POST, FETCH_POST, ADD_POST, SEARCH_POST } from "./actionTypes"
 import axios from 'axios'
 
 export const fetchAllPostSuccess = (posts) => {
@@ -65,4 +65,13 @@ export const deletePost = (_id) => {
             });
     };
 };
+
+export const searchPostSuccess = (searchText) => {
+    return {
+        type: SEARCH_POST,
+        payload: {
+            searchText
+        }
+    }
+} 
 

@@ -1,4 +1,4 @@
-import { FETCH_POST, ADD_POST, DELETE_POST } from "../actions/actionTypes";
+import { FETCH_POST, ADD_POST, DELETE_POST, SEARCH_POST } from "../actions/actionTypes";
 
 
 export default function postReducer (state =[], action) {
@@ -16,6 +16,8 @@ export default function postReducer (state =[], action) {
             return [action.payload, ...state];
         case DELETE_POST:
             return state.filter(post => post._id !== action.payload._id);
+        case SEARCH_POST:
+            return state.filter(post => post.title === action.payload.searchText);
         default:
             return state;
     }

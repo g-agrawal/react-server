@@ -1,11 +1,14 @@
 import React from 'react'
 import { Link  } from "react-router-dom";
+import { connect } from 'react-redux'
+import { searchPostSuccess } from '../actions/postAction';
 
 class BootstrapNavbar extends React.Component {
     handleSubmit = (event) => {
+        event.preventDefault();
         const formData = new FormData(event.target);
         const searchText = formData.get('searchPost');
-        console.log(searchText); 
+        this.props.onSearchPost(searchText);
     }
     render(){
         return(
@@ -44,4 +47,12 @@ class BootstrapNavbar extends React.Component {
     }
 }
 
-export default BootstrapNavbar;
+const mapDispatchToProps = dispatch => {
+    return {
+        onSearchPost: searchText => {
+            dispatch(searchPostSuccess(searchText));
+        }
+    };
+  };
+
+export default connect(null, mapDispatchToProps)(BootstrapNavbar);
