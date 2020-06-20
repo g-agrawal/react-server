@@ -10,6 +10,10 @@ class BootstrapNavbar extends React.Component {
         const searchText = formData.get('searchPost');
         this.props.onSearchPost(searchText);
     }
+    handleClear = () => {
+        this.props.onSearchPost('');  
+        this.searchFormRef.reset();     
+    }
     render(){
         return(
             <div>
@@ -34,10 +38,11 @@ class BootstrapNavbar extends React.Component {
                             <Link to="/Contact" className="nav-link">Contact</Link>
                         </li>                         
                     </ul>
-                    <form className="form-inline my-2 my-lg-0" onSubmit={this.handleSubmit}>
+                    <form className="form-inline my-2 my-lg-0" ref={(formRef) => this.searchFormRef = formRef} onSubmit={this.handleSubmit}>
                         {/* input className=form-control-sm and button className=btn-sm, for smaller search control */}
                         <input className="form-control-sm mr-sm-2" type="search" name="searchPost" placeholder="Search" aria-label="Search"></input>
                         <button className="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
+                        <button className="btn btn-outline-success btn-sm my-2 ml-2 my-sm-0" type='button' onClick={this.handleClear}>Clear</button>
                     </form>
                 </div>
             </nav>

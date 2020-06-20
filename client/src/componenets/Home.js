@@ -42,8 +42,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
+    let searchPosts = state.posts;
+    if(state.searchText) {
+        searchPosts = state.posts.filter(post => post.title.toLowerCase().includes(state.searchText.toLowerCase()) || post.description.toLowerCase().includes(state.searchText.toLowerCase()));
+    }
     return {
-        posts: state
+        posts: searchPosts
     };
 }
 
