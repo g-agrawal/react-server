@@ -5,7 +5,8 @@ export default function postReducer (state =[], action) {
     switch(action.type) {
         case FETCH_POST:
             return {
-                posts: action.payload.posts
+                posts: action.payload.posts,
+                searchText: state.searchText
             };
         case ADD_POST:
             let posts = [...state.posts];
@@ -14,15 +15,18 @@ export default function postReducer (state =[], action) {
                 postChanged.title = action.payload.title;
                 postChanged.description = action.payload.description;
                 return {
-                    posts: posts
+                    posts: posts,
+                    searchText: state.searchText
                 };
             } 
             return {
-                posts: [action.payload, ...state.posts]
+                posts: [action.payload, ...state.posts],
+                searchText: state.searchText
             };
         case DELETE_POST:
             return {
-                posts: state.posts.filter(post => post._id !== action.payload._id)
+                posts: state.posts.filter(post => post._id !== action.payload._id),
+                searchText: state.searchText
             };
         case SEARCH_POST:
             return {
@@ -31,7 +35,8 @@ export default function postReducer (state =[], action) {
             };
         default:
             return {
-                posts: state.posts
+                posts: state.posts,
+                searchText: state.searchText
             };
     }
 }
