@@ -88,7 +88,7 @@ const mapStateToProps = (state, ownProps) => {
     if(ownProps.match.params.postId) {
         let postId = ownProps.match.params.postId;
         return {
-            post: state.find(post => post._id === postId)
+            post: state.posts.find(post => post._id === postId)
         };
     }
     return { };

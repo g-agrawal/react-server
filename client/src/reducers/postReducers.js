@@ -8,22 +8,30 @@ export default function postReducer (state =[], action) {
                 posts: action.payload.posts
             };
         case ADD_POST:
-            let posts = [...state];
+            let posts = [...state.posts];
             let postChanged = posts.find(post => post._id === action.payload._id);
             if(postChanged) {
                 postChanged.title = action.payload.title;
                 postChanged.description = action.payload.description;
-                return posts;
+                return {
+                    posts: posts
+                };
             } 
-            return [action.payload, ...state];
+            return {
+                posts: [action.payload, ...state.posts]
+            };
         case DELETE_POST:
-            return state.filter(post => post._id !== action.payload._id);
+            return {
+                posts: state.posts.filter(post => post._id !== action.payload._id)
+            };
         case SEARCH_POST:
             return {
                 ...state,
                 searchText: action.payload.searchText
             };
         default:
-            return state;
+            return {
+                posts: state.posts
+            };
     }
 }
