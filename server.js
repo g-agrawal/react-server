@@ -15,23 +15,23 @@ var posts = [];
 
 app.use(express.json());
 
-const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-client.connect(function(err, db) {
-    if (err) {
-        console.log('error on connecting to DB - ');
-        console.log(err);
-        throw err;
-    }
-    var dbo = db.db("openskydb");
-    dbo.collection("posts").find({}).sort({$natural: -1}).toArray(function(err, result) {
-        if (err) {
-            console.log("error on finding records in database");
-            throw err;
-        }
-        db.close();
-        posts = result;  
-    });
-});    
+// const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+// client.connect(function(err, db) {
+//     if (err) {
+//         console.log('error on connecting to DB - ');
+//         console.log(err);
+//         throw err;
+//     }
+//     var dbo = db.db("openskydb");
+//     dbo.collection("posts").find({}).sort({$natural: -1}).toArray(function(err, result) {
+//         if (err) {
+//             console.log("error on finding records in database");
+//             throw err;
+//         }
+//         db.close();
+//         posts = result;  
+//     });
+// });    
 
 
 app.get('/refresh', (req, res) => {      
@@ -56,7 +56,7 @@ app.get('/refresh', (req, res) => {
     });              
 });
 app.get('/posts', (req, res) => {  
-    if(prodEnv) {
+    //if(prodEnv) {
         const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
         client.connect(function(err, db) {
             if (err) {
@@ -74,11 +74,11 @@ app.get('/posts', (req, res) => {
                 res.json(result);  
             });
         }); 
-    }
-    else {
-        console.log('got post request from client');
-        res.json(posts);
-    }      
+    //}
+    // else {
+    //     console.log('got post request from client');
+    //     res.json(posts);
+    // }      
 });
 app.post('/addPost', (req, res) => {
     const client = new MongoClient(mongoDbUrl, { useNewUrlParser: true, useUnifiedTopology: true });

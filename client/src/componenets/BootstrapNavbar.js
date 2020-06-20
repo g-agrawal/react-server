@@ -31,9 +31,9 @@ class BootstrapNavbar extends React.Component {
                         <li className="subitem-width-auto  nav-item">
                             <Link to="/Post" className="nav-link">Post</Link>
                         </li>
-                        <li className="subitem-width-auto  nav-item">
+                        {/* <li className="subitem-width-auto  nav-item">
                             <Link to="/Refresh" className="nav-link">Refresh</Link>
-                        </li>  
+                        </li>   */}
                         <li className="subitem-width-auto  nav-item">
                             <Link to="/Contact" className="nav-link">Contact</Link>
                         </li>                         
@@ -41,8 +41,8 @@ class BootstrapNavbar extends React.Component {
                     <form className="form-inline my-2 my-lg-0" ref={(formRef) => this.searchFormRef = formRef} onSubmit={this.handleSubmit}>
                         {/* input className=form-control-sm and button className=btn-sm, for smaller search control */}
                         <input className="form-control-sm mr-sm-2" type="search" name="searchPost" placeholder="Search" aria-label="Search"></input>
-                        <button className="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
-                        <button className="btn btn-outline-success btn-sm my-2 ml-2 my-sm-0" type='button' onClick={this.handleClear}>Clear</button>
+                        <button className="nav-link btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
+                        <button className="nav-link btn btn-outline-success btn-sm my-2 ml-2 my-sm-0" type='button' onClick={this.handleClear}>Clear</button>
                     </form>
                 </div>
             </nav>
